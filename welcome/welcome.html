@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1a0000">
+  <title>Carrmeggedon</title>
+  <meta property="og:title" content="Is it Carrmeggedon Yet?">
+  <meta property="og:description" content="The Sunday before Thanksgiving. Noon. Bloodier than ever.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap">
+  <style>
+    :root {
+      --red: #8c0505;
+      --red-bright: #e01b1b;
+      --ink: #fff;
+      --muted: #c9b7b7;
+      --panel: rgba(255, 255, 255, 0.06);
+      --radius: 14px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: #000; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Lato', Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(170deg, #000 0%, #2a0000 50%, #700000 100%);
+      text-align: center;
+      line-height: 1.4;
+    }
+    img { max-width: 100%; display: block; }
+
+    header {
+      position: sticky; top: 0; z-index: 10;
+      padding: 0.75rem 1rem;
+      background: linear-gradient(120deg, #000, #700000);
+      font-size: 1.25rem; font-weight: 700; letter-spacing: 0.02em;
+      text-align: left;
+    }
+
+    main { max-width: 900px; margin: 0 auto; padding: 0 1rem 3rem; }
+    section { padding: 2.5rem 0; }
+
+    /* ---------- Hero ---------- */
+    .avatar {
+      width: 130px; height: 160px; margin: 0 auto 1.25rem;
+      border-radius: 50%;
+      object-fit: cover;
+      animation: bob 3s ease-in-out infinite;
+    }
+    h1 { font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 300; margin: 0 0 0.5rem; }
+    .answer {
+      font-size: clamp(3rem, 16vw, 6rem); font-weight: 900; line-height: 1;
+      margin: 0.25rem 0 1rem; color: var(--red-bright);
+      text-shadow: 0 4px 24px rgba(224, 27, 27, 0.45);
+    }
+    .answer.yes { color: #3dff6e; text-shadow: 0 4px 24px rgba(61, 255, 110, 0.45); animation: shake 0.4s infinite; }
+
+    .tagline {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      min-height: 3.5rem; max-width: 100%;
+      margin: 0 auto; padding: 0.75rem 1.25rem;
+      font: inherit; font-size: clamp(1.05rem, 4vw, 1.4rem); font-weight: 700;
+      color: var(--ink); background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 999px;
+      cursor: pointer; transition: transform 0.15s, background 0.15s;
+    }
+    .tagline:hover { background: rgba(255, 255, 255, 0.12); }
+    .tagline:active { transform: scale(0.97); }
+    .tagline .text { transition: opacity 0.25s; }
+    .tagline .text.fade { opacity: 0; }
+    .hint { display: block; margin-top: 0.5rem; font-size: 0.8rem; color: var(--muted); }
+
+    .hero-img { width: 100%; border-radius: var(--radius); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); }
+
+    /* ---------- Countdown ---------- */
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-weight: 900; font-size: clamp(1.1rem, 4.5vw, 1.6rem); margin: 0; }
+    h2 { font-weight: 300; font-size: clamp(1.6rem, 6vw, 2.5rem); margin: 0.5rem 0 0.25rem; }
+    .sub { text-transform: uppercase; color: var(--muted); font-weight: 700; margin: 0 0 1.5rem; }
+
+    .clock {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(0.4rem, 2vw, 1rem);
+      max-width: 760px; margin: 0 auto;
+    }
+    .unit {
+      background: #000; border-radius: var(--radius);
+      padding: clamp(0.75rem, 3vw, 1.5rem) 0.25rem;
+      border-bottom: 4px solid var(--red);
+    }
+    .digits {
+      display: block;
+      font-weight: 300; font-size: clamp(2.2rem, 11vw, 6.5rem); line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .label { display: block; margin-top: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; font-size: clamp(0.65rem, 2.6vw, 1.1rem); color: var(--muted); }
+    .when { margin-top: 1.25rem; font-weight: 700; }
+
+    footer { padding: 2rem 1rem; color: var(--muted); font-size: 0.85rem; }
+
+    /* ---------- Fun bits ---------- */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s, transform 0.7s; }
+    .reveal.in { opacity: 1; transform: none; }
+    @keyframes bob { 50% { transform: translateY(-8px) rotate(-3deg); } }
+    @keyframes shake { 25% { transform: rotate(-2deg); } 75% { transform: rotate(2deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>Carrmeggedon</header>
+
+  <main>
+    <section class="hero">
+      <img class="avatar" src="assets/img/avatars/442D00F6-01D6-4E21-B9FF-3BC7399A761E.gif" alt="The man himself">
+      <h1>Is it Carrmeggedon Yet?</h1>
+      <p class="answer" id="answer">NOPE</p>
+      <button class="tagline" id="tagline" type="button" aria-live="polite">
+        <span class="text" id="tagline-text">Loading the carnage…</span>
+      </button>
+      <span class="hint">tap for more wisdom</span>
+    </section>
+
+    <section class="reveal">
+      <img class="hero-img" src="assets/img/Image%2044.jpg" alt="Carrmeggedon is coming" loading="lazy">
+    </section>
+
+    <section class="reveal" id="countdown">
+      <p class="eyebrow">We're back and bloodier than ever!</p>
+      <h2>Carrmeggedon <span id="year"></span> Countdown</h2>
+      <p class="sub">Giving a new meaning to in-person</p>
+
+      <div class="clock" role="timer" aria-live="off">
+        <div class="unit"><span class="digits" id="days">--</span><span class="label">days</span></div>
+        <div class="unit"><span class="digits" id="hours">--</span><span class="label">hours</span></div>
+        <div class="unit"><span class="digits" id="minutes">--</span><span class="label">minutes</span></div>
+        <div class="unit"><span class="digits" id="seconds">--</span><span class="label">seconds</span></div>
+      </div>
+      <p class="when" id="when"></p>
+    </section>
+  </main>
+
+  <footer>Every year. The Sunday before Thanksgiving. Noon. Don't say "Carr" 3 times.</footer>
+
+  <script>
+  // ============================================================
+  //  SETTINGS — the only part you should ever need to touch.
+  //  The date figures itself out every year: the Sunday before
+  //  Thanksgiving (4th Thursday of November) at noon.
+  // ============================================================
+  const CONFIG = {
+    timeZone: 'America/Detroit', // where the party is (IANA name)
+    startHour: 12,               // 12 = noon, 24h clock
+    partyHours: 12,              // how long "YES!" shows before rolling to next year
+    rotateEveryMs: 7000,         // auto-shuffle taglines; 0 to turn off
+  };
+
+  // Add / remove lines freely — no numbering needed.
+  const MESSAGES = [
+    "Pushing 50 and pushing P.",
+    "Balls Friday? More like balls deep.",
+    "Like German Soccer but bloodier",
+    "Don't run. He likes that.",
+    "Build Back Bloodier",
+    "If you build it, Carr will come.",
+    "Always have your anus prepared",
+    "Sign up for the Newsletter",
+    "May cause anal leakage",
+    "Where's that bitch Karas?",
+    "Do it for Donnie",
+    "Spandex optional",
+    "Like draining a 3-pointer with a lit cig",
+    "Wanna Smash?",
+    "You're my opp",
+    "Bite the pillow",
+    "Well, there's always next year.",
+    "Good night sweet prince",
+    "The chair recognizes the penis from Hastings.",
+    "Don't say 'Carr' 3 times.",
+    "Simulation",
+    "You're in bear country",
+    "You'll need TP for your bunghole",
+    "You don't NEED two kidneys",
+    "Consult a doctor if Carrmeggedon lasts 4 hours",
+    "Lions Super Bowl!",
+    "Anyway, here's Wonderall",
+    "Your butt is a slot machine that need adjusting",
+    "Corolla-size butthole",
+    "Pooping is overrated",
+    "Maybe next time stay home",
+    "Mr. Christopher's greatest creation",
+  ];
+
+  // ---------- Taglines: shuffle-bag, so nothing repeats until all have shown ----------
+  let bag = [];
+  let last = null;
+  function nextMessage() {
+    if (!bag.length) {
+      bag = MESSAGES.slice();
+      for (let i = bag.length - 1; i > 0; i--) {          // Fisher–Yates shuffle
+        const j = Math.floor(Math.random() * (i + 1));
+        [bag[i], bag[j]] = [bag[j], bag[i]];
+      }
+      if (bag[bag.length - 1] === last) bag.unshift(bag.pop()); // no back-to-back repeat
+    }
+    return (last = bag.pop());
+  }
+
+  const taglineText = document.getElementById('tagline-text');
+  let rotateTimer;
+  function showMessage() {
+    taglineText.classList.add('fade');
+    setTimeout(() => {
+      taglineText.textContent = nextMessage();
+      taglineText.classList.remove('fade');
+    }, 250);
+    clearInterval(rotateTimer);
+    if (CONFIG.rotateEveryMs) rotateTimer = setInterval(showMessage, CONFIG.rotateEveryMs);
+  }
+  document.getElementById('tagline').addEventListener('click', showMessage);
+  taglineText.textContent = nextMessage();
+  if (CONFIG.rotateEveryMs) rotateTimer = setInterval(showMessage, CONFIG.rotateEveryMs);
+
+  // ---------- Date math ----------
+  // Thanksgiving = 4th Thursday of November; we want the Sunday 4 days before.
+  function sundayBeforeThanksgiving(year) {
+    const firstDow = new Date(Date.UTC(year, 10, 1)).getUTCDay();  // 0=Sun … 4=Thu
+    const firstThursday = 1 + ((4 - firstDow + 7) % 7);
+    return firstThursday + 21 - 4;
+  }
+
+  // Milliseconds the given time zone is ahead of UTC at a given instant.
+  function tzOffset(ms, timeZone) {
+    const p = {};
+    new Intl.DateTimeFormat('en-US', {
+      timeZone, hourCycle: 'h23',
+      year: 'numeric', month: 'numeric', day: 'numeric',
+      hour: 'numeric', minute: 'numeric', second: 'numeric',
+    }).formatToParts(ms).forEach(x => { p[x.type] = +x.value; });
+    return Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second) - ms;
+  }
+
+  // The exact moment the party starts in a given year (in the party's time zone).
+  function partyStart(year) {
+    const wallClock = Date.UTC(year, 10, sundayBeforeThanksgiving(year), CONFIG.startHour);
+    return new Date(wallClock - tzOffset(wallClock, CONFIG.timeZone));
+  }
+
+  // Handy for testing: welcome.html?now=2026-11-22T13:00:00-05:00
+  const nowParam = new URLSearchParams(location.search).get('now');
+  const clockSkew = nowParam && !isNaN(Date.parse(nowParam)) ? Date.parse(nowParam) - Date.now() : 0;
+  const now = () => Date.now() + clockSkew;
+
+  function currentParty() {
+    const t = now();
+    const year = new Date(t).getUTCFullYear();
+    let start = partyStart(year);
+    if (t >= start.getTime() + CONFIG.partyHours * 3600e3) start = partyStart(year + 1);
+    return start;
+  }
+
+  // ---------- Countdown ----------
+  const $ = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2, '0');
+  let shownStart = null;
+
+  function tick() {
+    const start = currentParty();
+    if (start.getTime() !== shownStart) {               // only re-render labels when the year changes
+      shownStart = start.getTime();
+      $('year').textContent = start.getFullYear();
+      $('when').textContent = start.toLocaleString(undefined, {
+        weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+        hour: 'numeric', minute: '2-digit', timeZone: CONFIG.timeZone, timeZoneName: 'short',
+      });
+    }
+
+    const diff = Math.max(0, start.getTime() - now());
+    const s = Math.floor(diff / 1000);
+    $('days').textContent = Math.floor(s / 86400);
+    $('hours').textContent = pad(Math.floor(s / 3600) % 24);
+    $('minutes').textContent = pad(Math.floor(s / 60) % 60);
+    $('seconds').textContent = pad(s % 60);
+
+    const live = diff === 0;
+    const answer = $('answer');
+    answer.textContent = live ? 'YES!!!' : (s < 86400 ? 'ALMOST' : 'NOPE');
+    answer.classList.toggle('yes', live);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // ---------- Scroll-in reveal (replaces the old AOS library) ----------
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
